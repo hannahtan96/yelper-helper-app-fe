@@ -1,13 +1,13 @@
-import './Restaurant.css';
+import './Recommendation.css';
 
-const Restaurant = (props) => {
-  const onRestaurantClick = () => {
+const Recommendation = (props) => {
+  const onRecommendationClick = () => {
     props.onChoose(props);
   };
 
   return (
-    <div onClick={onRestaurantClick}>
-      <ul className='restaurant'>
+    <div onClick={onRecommendationClick}>
+      <ul className='Recommendation'>
         <li>Name: {props.name}</li>
         <li>
           Location: {props.address} {props.city}, {props.state}
@@ -20,4 +20,4 @@ const Restaurant = (props) => {
   );
 };
 
-export default Restaurant;
+export default Recommendation;
