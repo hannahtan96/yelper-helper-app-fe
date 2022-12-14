@@ -1,0 +1,9 @@
+.restaurant {
+  list-style: none;
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.restaurant:hover {
+  background-color: gray;
+}

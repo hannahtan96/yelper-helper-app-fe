@@ -1,0 +1,12 @@
+.restaurant-block {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  row-gap: 10px;
+}
+
+ul {
+  list-style: none;
+}
+
