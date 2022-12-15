@@ -24,6 +24,13 @@ header {
   font-weight: 700;
 }
 
+.loading {
+  display: none;
+}
+.loading::before {
+  content: 'Loading...'
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

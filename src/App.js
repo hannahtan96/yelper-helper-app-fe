@@ -12,6 +12,7 @@ function App() {
   const [listOfRecIds, setlistOfRecIds] = useState([]);
   const [listOfRecs, setlistOfRecs] = useState([]);
   const [newCity, setNewCity] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const makeProper = (str) => {
     const string = str
@@ -84,6 +85,7 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findRecsBusinessIds');
+        console.log(response.data);
         setlistOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
       })
       .catch((error) => {
@@ -104,9 +106,8 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findBusinessesInNewCity');
-        setlistOfRecs(
-          response.data.slice(0, Math.min(20, response.data.length))
-        );
+        setlistOfRecs(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -121,6 +122,7 @@ function App() {
     new Promise((resolve, reject) => setTimeout(resolve, ms));
 
   useEffect(() => {
+    setLoading(true);
     const callFirst = async () => {
       if (newCity) {
         await findUserIds();
@@ -147,6 +149,8 @@ function App() {
     callThird();
   }, [listOfRecIds]);
 
+  const loadingStatus = loading ? 'loading' : 'not-loading';
+
   return (
     <div className='App'>
       <header>Yelper Helper</header>
@@ -172,15 +176,13 @@ function App() {
 
       {/* <button onClick={findUserIds}>Get Rec Business Ids</button> */}
       {/* <button onClick={findRecsBusinessIds}>Get Rec Business Ids</button> */}
-
-      <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
       {/* <button onClick={findBusinessesInNewCity}>Get Recs</button> */}
 
-      <h2>Restaurant Recommendations for {newCity}</h2>
-      <ListOfRestaurants
-        restaurants={listOfRecs}
-        onChooseRestaurant={setChosenRestaurant}
-      ></ListOfRestaurants>
+      <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
+      <div className={loadingStatus}>
+        <h2>Restaurant Recommendations for {newCity}</h2>
+        <ListOfRestaurants restaurants={listOfRecs}></ListOfRestaurants>
+      </div>
     </div>
   );
 }

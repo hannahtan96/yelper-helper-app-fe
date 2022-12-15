@@ -14,7 +14,7 @@ const Restaurant = (props) => {
         </li>
         <li>Stars: {props.stars}</li>
         <li>Categories: {props.categories}</li>
-        <li>Reviews: {props.review_count}</li>
+        <li>Reviews: {props.review_count.toLocaleString('en-US')}</li>
       </ul>
     </div>
   );
