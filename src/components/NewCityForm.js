@@ -30,7 +30,7 @@ const NewCityForm = (props) => {
           placeholder='New City'
         />
       </div>
-      <input className='inline' type='submit' value='Search Now!' />
+      <input className='submit-button' type='submit' />
     </form>
   );
 };

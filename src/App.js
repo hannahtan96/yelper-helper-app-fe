@@ -13,6 +13,7 @@ function App() {
   const [listOfRecs, setlistOfRecs] = useState([]);
   const [newCity, setNewCity] = useState('');
   const [loading, setLoading] = useState(false);
+  const [displayResults, setDisplayResults] = useState(false);
 
   const makeProper = (str) => {
     const string = str
@@ -108,6 +109,7 @@ function App() {
         console.log('finished running findBusinessesInNewCity');
         setlistOfRecs(response.data);
         setLoading(false);
+        setDisplayResults(true);
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -123,6 +125,7 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
+    setDisplayResults(false);
     const callFirst = async () => {
       if (newCity) {
         await findUserIds();
@@ -149,7 +152,9 @@ function App() {
     callThird();
   }, [listOfRecIds]);
 
-  const loadingStatus = loading ? 'loading' : 'not-loading';
+  const firstLoadStatus = newCity ? 'color' : 'no-color';
+  const loadingStatus = loading ? 'display' : 'no-display';
+  const displayStatus = displayResults ? 'display' : 'no-display';
 
   return (
     <div className='App'>
@@ -179,7 +184,8 @@ function App() {
       {/* <button onClick={findBusinessesInNewCity}>Get Recs</button> */}
 
       <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
-      <div className={loadingStatus}>
+      <div className={`${loadingStatus} ${firstLoadStatus}`}>Loading...</div>
+      <div className={displayStatus}>
         <h2>Restaurant Recommendations for {newCity}</h2>
         <ListOfRestaurants restaurants={listOfRecs}></ListOfRestaurants>
       </div>

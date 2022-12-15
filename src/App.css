@@ -24,13 +24,21 @@ header {
   font-weight: 700;
 }
 
-.loading {
+.display {
+  padding-top: 30px;
+  display: block;
+}
+.no-display {
   display: none;
 }
-.loading::before {
-  content: 'Loading...'
+
+.no-color {
+  color: white
 }
 
+.color {
+  color: black
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './RestaurantForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const RestaurantForm = (props) => {
   const [formFields, setFormFields] = useState({ name: '', city: '' });
@@ -26,10 +28,13 @@ const RestaurantForm = (props) => {
     });
   };
 
+  // const magnifyGlass = <FontAwesomeIcon icon={faMagnifyingGlass} />;
+
   return (
     <form onSubmit={onFormSubmit}>
       <div className='inline'>
         <input
+          className='restaurant-name'
           name='name'
           value={formFields.name}
           onChange={onRestaurantNameChange}
@@ -42,7 +47,7 @@ const RestaurantForm = (props) => {
           placeholder='City'
         />
       </div>
-      <input className='inline' type='submit' value='Search Now!' />
+      <input className='submit-button' type='submit'></input>
     </form>
   );
 };
