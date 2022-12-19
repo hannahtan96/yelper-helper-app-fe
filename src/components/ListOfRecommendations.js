@@ -14,6 +14,7 @@ const ListOfRecommendations = (props) => {
             state={recommendation.state}
             stars={recommendation.stars}
             categories={recommendation.categories}
+            attributes={recommendation.attributes}
             review_count={recommendation.review_count}
           ></Recommendation>
         </li>

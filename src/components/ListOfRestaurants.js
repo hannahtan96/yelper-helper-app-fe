@@ -13,6 +13,7 @@ const ListOfRestaurants = (props) => {
           state={restaurant.state}
           stars={restaurant.stars}
           categories={restaurant.categories}
+          attributes={restaurant.attributes}
           review_count={restaurant.review_count}
           onChoose={props.onChooseRestaurant}
         ></Restaurant>

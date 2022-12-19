@@ -95,7 +95,6 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findRecsBusinessIds');
-        console.log(response.data);
         setlistOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
       })
       .catch((error) => {
@@ -159,8 +158,23 @@ function App() {
     callThird();
   }, [listOfRecIds]);
 
+  const newCityFormStatus = restaurant.name ? 'display' : 'no-display';
   const loadingStatus = loading && newCity ? 'display' : 'no-display';
   const resultStatus = listOfRecs.length > 1 ? 'display' : 'no-display';
+  // const reservationStatus = JSON.parse(
+  //   JSON.stringify(restaurant.attributes.RestaurantsReservations)
+  // )
+  //   ? '✓'
+  //   : '✗';
+  // const deliveryStatus = JSON.parse(
+  //   JSON.stringify(restaurant.attributes.RestaurantsDelivery)
+  // )
+  //   ? '✓'
+  //   : '✗';
+  // const outdoorSeatingStatus =
+  //   JSON.parse(JSON.stringify(restaurant.attributes.OutdoorSeating)) === 'None'
+  //     ? '✗'
+  //     : '✓';
 
   return (
     <div className='App'>
@@ -175,12 +189,91 @@ function App() {
 
       {Object.keys(restaurant).length > 0 ? (
         <ul className='chosen-restaurant'>
-          <li>Name: {restaurant.name}</li>
-          <li>
-            Location: {restaurant.city}, {restaurant.state}
+          <li className='name-css'>{restaurant.name}</li>
+          <li className='restaurant-details'>
+            <div
+              className='star-ratings-css'
+              title={JSON.stringify((2 * restaurant.stars) / 10)}
+            ></div>
+            <div className='reviews-css'>
+              {restaurant.review_count.toLocaleString('en-US')}
+            </div>
           </li>
-          <li>Stars: {restaurant.stars}</li>
-          <li>Reviews: {restaurant.review_count}</li>
+          <li className='restaurant-details'>
+            <div className='category-css'>
+              {JSON.stringify(restaurant.categories).split(', ')[1]}
+            </div>
+            <div>
+              {'$'.repeat(
+                parseInt(restaurant.attributes.RestaurantsPriceRange2)
+              )}
+            </div>
+            <div className='city-css'>{restaurant.city}</div>
+          </li>
+          <li className='restaurant-details'>
+            <div className='attributes-css'>
+              <div
+                className={
+                  (JSON.parse(
+                    JSON.stringify(
+                      restaurant.attributes.RestaurantsReservations
+                    )
+                  )
+                    ? '✓'
+                    : '✗') === '✓'
+                    ? 'green'
+                    : 'red'
+                }
+              >
+                {JSON.parse(
+                  JSON.stringify(restaurant.attributes.RestaurantsReservations)
+                )
+                  ? '✓'
+                  : '✗'}
+              </div>
+              <div>Reservations</div>
+            </div>
+            <div className='attributes-css'>
+              <div
+                className={
+                  (JSON.parse(
+                    JSON.stringify(restaurant.attributes.RestaurantsDelivery)
+                  )
+                    ? '✓'
+                    : '✗') === '✓'
+                    ? 'green'
+                    : 'red'
+                }
+              >
+                {JSON.parse(
+                  JSON.stringify(restaurant.attributes.RestaurantsDelivery)
+                )
+                  ? '✓'
+                  : '✗'}
+              </div>
+              <div>Delivery</div>
+            </div>
+            <div className='attributes-css'>
+              <div
+                className={
+                  (JSON.parse(
+                    JSON.stringify(restaurant.attributes.OutdoorSeating)
+                  ) === 'None'
+                    ? '✗'
+                    : '✓') === '✓'
+                    ? 'green'
+                    : 'red'
+                }
+              >
+                {JSON.parse(
+                  JSON.stringify(restaurant.attributes.OutdoorSeating)
+                ) === 'None'
+                  ? '✗'
+                  : '✓'}
+              </div>
+              <div>Outdoor Seating</div>
+            </div>
+          </li>
         </ul>
       ) : (
         <ListOfRestaurants
@@ -193,17 +286,21 @@ function App() {
       {/* <button onClick={findRecsBusinessIds}>Get Rec Business Ids</button> */}
       {/* <button onClick={findBusinessesInNewCity}>Get Recs</button> */}
 
-      <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
+      <div className={newCityFormStatus}>
+        <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
+      </div>
       <div id='loading' className={loadingStatus}>
         Loading...
       </div>
-      <div id='recommendations' className={resultStatus}>
+      <div className={resultStatus}>
         <header id='recommendation-title'>
           Restaurant Recommendations for {newCity}
         </header>
-        <ListOfRecommendations
-          recommendations={listOfRecs}
-        ></ListOfRecommendations>
+        <div id='recommendations'>
+          <ListOfRecommendations
+            recommendations={listOfRecs}
+          ></ListOfRecommendations>
+        </div>
       </div>
     </div>
   );
