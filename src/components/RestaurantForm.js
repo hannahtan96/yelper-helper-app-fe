@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import React from 'react';
 import './RestaurantForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+// import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const RestaurantForm = (props) => {
   const [formFields, setFormFields] = useState({ name: '', city: '' });
@@ -33,21 +34,26 @@ const RestaurantForm = (props) => {
   return (
     <form onSubmit={onFormSubmit}>
       <div className='inline'>
-        <input
-          className='restaurant-name'
-          name='name'
-          value={formFields.name}
-          onChange={onRestaurantNameChange}
-          placeholder='Restaurant Name'
-        />
-        <input
-          name='city'
-          value={formFields.city}
-          onChange={onRestaurantCityChange}
-          placeholder='City'
-        />
+        <div className='search-items'>
+          <input
+            className='input-field'
+            name='name'
+            value={formFields.name}
+            onChange={onRestaurantNameChange}
+            placeholder='Restaurant Name'
+          />
+          <input
+            className='input-field'
+            name='city'
+            value={formFields.city}
+            onChange={onRestaurantCityChange}
+            placeholder='City'
+          />
+        </div>
+        <button className='submit-button' onClick={onFormSubmit}>
+          <FontAwesomeIcon icon='fa-solid fa-magnifying-glass' />
+        </button>
       </div>
-      <input className='submit-button' type='submit'></input>
     </form>
   );
 };

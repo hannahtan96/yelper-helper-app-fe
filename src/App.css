@@ -1,12 +1,31 @@
 .App {
   text-align: center;
   padding: 20px;
+  background-image: url(./assets/eaters-collective-i_xVfNtQjwI-unsplash.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  background-position: center;
 }
 
-header {
-  font-size: 40px;
+
+.header-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  gap: 10px;
+}
+
+#yelp-logo {
+  height: 30px;
+}
+
+#app-title, #recommendation-title {
+  font-size: 30px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-weight: 800;
-  margin-bottom: 10px;
+  letter-spacing: -1px;
 }
 
 .restaurant-section {
@@ -24,20 +43,25 @@ header {
   font-weight: 700;
 }
 
+#recommendations {
+  overflow: scroll;
+  height: 550px;
+}
+
 .display {
-  padding-top: 30px;
+  padding-top: 50px;
   display: block;
 }
 .no-display {
   display: none;
 }
 
-.no-color {
-  color: white
-}
-
-.color {
-  color: black
+#loading {
+  font-size: 40px;
+  font-weight: 700;
+  font-style: italic;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 @media (prefers-reduced-motion: no-preference) {

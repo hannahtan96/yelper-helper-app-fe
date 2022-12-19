@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './NewCityForm.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const NewCityForm = (props) => {
   const [formFields, setFormFields] = useState({ newCity: '' });
@@ -23,14 +24,19 @@ const NewCityForm = (props) => {
   return (
     <form onSubmit={onFormSubmit}>
       <div className='inline'>
-        <input
-          name='name'
-          value={formFields.newCity}
-          onChange={onNewCityChange}
-          placeholder='New City'
-        />
+        <div className='search-items'>
+          <input
+            className='input-field'
+            name='name'
+            value={formFields.newCity}
+            onChange={onNewCityChange}
+            placeholder='New City'
+          />
+        </div>
+        <button className='submit-button' onClick={onFormSubmit}>
+          <FontAwesomeIcon icon='fa-solid fa-magnifying-glass' />
+        </button>
       </div>
-      <input className='submit-button' type='submit' />
     </form>
   );
 };

@@ -1,11 +1,21 @@
+// GLOBAL FontAwesomeIcon
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import RestaurantForm from './components/RestaurantForm';
 import NewCityForm from './components/NewCityForm';
 import ListOfRestaurants from './components/ListOfRestaurants';
-import { useState, useEffect } from 'react';
+import ListOfRecommendations from './components/ListOfRecommendations';
 import './App.css';
-import axios from 'axios';
+import yelpLogo from './assets/Yelp_Logo.png';
+
+// import { getSearchParamsForLocation } from 'react-router-dom/dist/dom';
 
 function App() {
+  library.add(faMagnifyingGlass);
+
   const [restaurant, setRestaurant] = useState({});
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [listOfUsers, setListOfUsers] = useState([]);
@@ -13,7 +23,6 @@ function App() {
   const [listOfRecs, setlistOfRecs] = useState([]);
   const [newCity, setNewCity] = useState('');
   const [loading, setLoading] = useState(false);
-  const [displayResults, setDisplayResults] = useState(false);
 
   const makeProper = (str) => {
     const string = str
@@ -109,7 +118,6 @@ function App() {
         console.log('finished running findBusinessesInNewCity');
         setlistOfRecs(response.data);
         setLoading(false);
-        setDisplayResults(true);
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -125,7 +133,6 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    setDisplayResults(false);
     const callFirst = async () => {
       if (newCity) {
         await findUserIds();
@@ -152,13 +159,16 @@ function App() {
     callThird();
   }, [listOfRecIds]);
 
-  const firstLoadStatus = newCity ? 'color' : 'no-color';
-  const loadingStatus = loading ? 'display' : 'no-display';
-  const displayStatus = displayResults ? 'display' : 'no-display';
+  const loadingStatus = loading && newCity ? 'display' : 'no-display';
+  const resultStatus = listOfRecs.length > 1 ? 'display' : 'no-display';
 
   return (
     <div className='App'>
-      <header>Yelper Helper</header>
+      <section className='header-section'>
+        <img id='yelp-logo' alt='Yelp logo' src={yelpLogo} />
+        <header id='app-title'>Yelper Helper</header>
+      </section>
+
       <RestaurantForm
         searchRestaurantCallback={searchNewRestaurant}
       ></RestaurantForm>
@@ -184,10 +194,16 @@ function App() {
       {/* <button onClick={findBusinessesInNewCity}>Get Recs</button> */}
 
       <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>
-      <div className={`${loadingStatus} ${firstLoadStatus}`}>Loading...</div>
-      <div className={displayStatus}>
-        <h2>Restaurant Recommendations for {newCity}</h2>
-        <ListOfRestaurants restaurants={listOfRecs}></ListOfRestaurants>
+      <div id='loading' className={loadingStatus}>
+        Loading...
+      </div>
+      <div id='recommendations' className={resultStatus}>
+        <header id='recommendation-title'>
+          Restaurant Recommendations for {newCity}
+        </header>
+        <ListOfRecommendations
+          recommendations={listOfRecs}
+        ></ListOfRecommendations>
       </div>
     </div>
   );

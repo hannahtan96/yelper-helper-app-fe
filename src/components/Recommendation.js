@@ -2,12 +2,18 @@ import './Recommendation.css';
 
 const Recommendation = (props) => {
   const onRecommendationClick = () => {
-    props.onChoose(props);
+    const urlName = props.name.split(' ').join('+');
+    const newWindow = window.open(
+      `https://www.yelp.com/search?find_desc=${urlName}&find_loc=${props.city}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
+    if (newWindow) newWindow.opener = null;
   };
 
   return (
     <div onClick={onRecommendationClick}>
-      <ul className='Recommendation'>
+      <ul className='recommendation'>
         <li>Name: {props.name}</li>
         <li>
           Location: {props.address} {props.city}, {props.state}
