@@ -8,6 +8,8 @@ import RestaurantForm from './components/RestaurantForm';
 import NewCityForm from './components/NewCityForm';
 import ListOfRestaurants from './components/ListOfRestaurants';
 import ListOfRecommendations from './components/ListOfRecommendations';
+import Restaurant from './components/Restaurant';
+import Attribute from './components/Attribute';
 import './App.css';
 import yelpLogo from './assets/Yelp_Logo.png';
 
@@ -19,8 +21,8 @@ function App() {
   const [restaurant, setRestaurant] = useState({});
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [listOfUsers, setListOfUsers] = useState([]);
-  const [listOfRecIds, setlistOfRecIds] = useState([]);
-  const [listOfRecs, setlistOfRecs] = useState([]);
+  const [listOfRecIds, setListOfRecIds] = useState([]);
+  const [listOfRecs, setListOfRecs] = useState([]);
   const [newCity, setNewCity] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -53,6 +55,13 @@ function App() {
         } else {
           setListOfRestaurants(response.data);
           setRestaurant({});
+        }
+
+        if (listOfUsers.length > 0) {
+          setListOfUsers([]);
+          setListOfRecIds([]);
+          setListOfRecs([]);
+          setNewCity('');
         }
       });
   };
@@ -95,7 +104,7 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findRecsBusinessIds');
-        setlistOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
+        setListOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -110,12 +119,12 @@ function App() {
       .get('http://127.0.0.1:3001/find_rec_businesses', {
         params: {
           business_ids: `${listOfRecIds.join(',')}`,
-          city: makeProper(newCity)
+          city: newCity
         }
       })
       .then((response) => {
         console.log('finished running findBusinessesInNewCity');
-        setlistOfRecs(response.data);
+        setListOfRecs(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -124,12 +133,21 @@ function App() {
   };
 
   const setNewCityName = async (newCity) => {
-    setNewCity(newCity.newCity);
+    setNewCity(makeProper(newCity.newCity));
   };
 
   const wait = (ms) =>
     new Promise((resolve, reject) => setTimeout(resolve, ms));
 
+  const onRedirectRestaurant = (props) => {
+    const urlName = props.name.split(' ').join('+');
+    const newWindow = window.open(
+      `https://www.yelp.com/search?find_desc=${urlName}&find_loc=${props.city}`,
+      '_blank',
+      'noopener,noreferrer'
+    );
+    if (newWindow) newWindow.opener = null;
+  };
   useEffect(() => {
     setLoading(true);
     const callFirst = async () => {
@@ -161,20 +179,6 @@ function App() {
   const newCityFormStatus = restaurant.name ? 'display' : 'no-display';
   const loadingStatus = loading && newCity ? 'display' : 'no-display';
   const resultStatus = listOfRecs.length > 1 ? 'display' : 'no-display';
-  // const reservationStatus = JSON.parse(
-  //   JSON.stringify(restaurant.attributes.RestaurantsReservations)
-  // )
-  //   ? '✓'
-  //   : '✗';
-  // const deliveryStatus = JSON.parse(
-  //   JSON.stringify(restaurant.attributes.RestaurantsDelivery)
-  // )
-  //   ? '✓'
-  //   : '✗';
-  // const outdoorSeatingStatus =
-  //   JSON.parse(JSON.stringify(restaurant.attributes.OutdoorSeating)) === 'None'
-  //     ? '✗'
-  //     : '✓';
 
   return (
     <div className='App'>
@@ -189,91 +193,18 @@ function App() {
 
       {Object.keys(restaurant).length > 0 ? (
         <ul className='chosen-restaurant'>
-          <li className='name-css'>{restaurant.name}</li>
-          <li className='restaurant-details'>
-            <div
-              className='star-ratings-css'
-              title={JSON.stringify((2 * restaurant.stars) / 10)}
-            ></div>
-            <div className='reviews-css'>
-              {restaurant.review_count.toLocaleString('en-US')}
-            </div>
-          </li>
-          <li className='restaurant-details'>
-            <div className='category-css'>
-              {JSON.stringify(restaurant.categories).split(', ')[1]}
-            </div>
-            <div>
-              {'$'.repeat(
-                parseInt(restaurant.attributes.RestaurantsPriceRange2)
-              )}
-            </div>
-            <div className='city-css'>{restaurant.city}</div>
-          </li>
-          <li className='restaurant-details'>
-            <div className='attributes-css'>
-              <div
-                className={
-                  (JSON.parse(
-                    JSON.stringify(
-                      restaurant.attributes.RestaurantsReservations
-                    )
-                  )
-                    ? '✓'
-                    : '✗') === '✓'
-                    ? 'green'
-                    : 'red'
-                }
-              >
-                {JSON.parse(
-                  JSON.stringify(restaurant.attributes.RestaurantsReservations)
-                )
-                  ? '✓'
-                  : '✗'}
-              </div>
-              <div>Reservations</div>
-            </div>
-            <div className='attributes-css'>
-              <div
-                className={
-                  (JSON.parse(
-                    JSON.stringify(restaurant.attributes.RestaurantsDelivery)
-                  )
-                    ? '✓'
-                    : '✗') === '✓'
-                    ? 'green'
-                    : 'red'
-                }
-              >
-                {JSON.parse(
-                  JSON.stringify(restaurant.attributes.RestaurantsDelivery)
-                )
-                  ? '✓'
-                  : '✗'}
-              </div>
-              <div>Delivery</div>
-            </div>
-            <div className='attributes-css'>
-              <div
-                className={
-                  (JSON.parse(
-                    JSON.stringify(restaurant.attributes.OutdoorSeating)
-                  ) === 'None'
-                    ? '✗'
-                    : '✓') === '✓'
-                    ? 'green'
-                    : 'red'
-                }
-              >
-                {JSON.parse(
-                  JSON.stringify(restaurant.attributes.OutdoorSeating)
-                ) === 'None'
-                  ? '✗'
-                  : '✓'}
-              </div>
-              <div>Outdoor Seating</div>
-            </div>
-          </li>
+          <Restaurant
+            business_id={restaurant.business_id}
+            name={restaurant.name}
+            address={restaurant.address}
+            city={restaurant.city}
+            state={restaurant.state}
+            stars={restaurant.stars}
+            categories={restaurant.categories}
+            attributes={restaurant.attributes}
+            review_count={restaurant.review_count}
+            onChoose={onRedirectRestaurant}
+          ></Restaurant>
         </ul>
       ) : (
         <ListOfRestaurants
@@ -297,9 +228,10 @@ function App() {
           Restaurant Recommendations for {newCity}
         </header>
         <div id='recommendations'>
-          <ListOfRecommendations
-            recommendations={listOfRecs}
-          ></ListOfRecommendations>
+          <ListOfRestaurants
+            restaurants={listOfRecs}
+            onChooseRestaurant={onRedirectRestaurant}
+          ></ListOfRestaurants>
         </div>
       </div>
     </div>

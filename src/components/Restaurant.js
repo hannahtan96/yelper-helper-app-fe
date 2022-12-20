@@ -1,4 +1,5 @@
 import './Restaurant.css';
+import Attribute from './Attribute';
 
 const Restaurant = (props) => {
   const onRestaurantClick = () => {
@@ -28,62 +29,24 @@ const Restaurant = (props) => {
           <div className='city-css'>{props.city}</div>
         </li>
         <li className='restaurant-details'>
-          <div className='attributes-css'>
-            <div
-              className={
-                (JSON.parse(
-                  JSON.stringify(props.attributes.RestaurantsReservations)
-                )
-                  ? '✓'
-                  : '✗') === '✓'
-                  ? 'green'
-                  : 'red'
-              }
-            >
-              {JSON.parse(
-                JSON.stringify(props.attributes.RestaurantsReservations)
-              )
-                ? '✓'
-                : '✗'}
-            </div>
-            <div>Reservations</div>
-          </div>
-          <div className='attributes-css'>
-            <div
-              className={
-                (JSON.parse(
-                  JSON.stringify(props.attributes.RestaurantsDelivery)
-                )
-                  ? '✓'
-                  : '✗') === '✓'
-                  ? 'green'
-                  : 'red'
-              }
-            >
-              {JSON.parse(JSON.stringify(props.attributes.RestaurantsDelivery))
-                ? '✓'
-                : '✗'}
-            </div>
-            <div>Delivery</div>
-          </div>
-          <div className='attributes-css'>
-            <div
-              className={
-                (JSON.parse(JSON.stringify(props.attributes.OutdoorSeating)) ===
-                'None'
-                  ? '✗'
-                  : '✓') === '✓'
-                  ? 'green'
-                  : 'red'
-              }
-            >
-              {JSON.parse(JSON.stringify(props.attributes.OutdoorSeating)) ===
-              'None'
-                ? '✗'
-                : '✓'}
-            </div>
-            <div>Outdoor Seating</div>
-          </div>
+          {'RestaurantsReservations' in props.attributes ? (
+            <Attribute
+              caption='Reservations'
+              attribute={props.attributes.RestaurantsReservations}
+            ></Attribute>
+          ) : null}
+          {'RestaurantsDelivery' in props.attributes ? (
+            <Attribute
+              caption='Delivery'
+              attribute={props.attributes.RestaurantsDelivery}
+            ></Attribute>
+          ) : null}
+          {'OutdoorSeating' in props.attributes ? (
+            <Attribute
+              caption='Outdoor Seating'
+              attribute={props.attributes.OutdoorSeating}
+            ></Attribute>
+          ) : null}
         </li>
       </ul>
     </div>
