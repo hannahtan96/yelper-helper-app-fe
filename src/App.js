@@ -7,9 +7,7 @@ import axios from 'axios';
 import RestaurantForm from './components/RestaurantForm';
 import NewCityForm from './components/NewCityForm';
 import ListOfRestaurants from './components/ListOfRestaurants';
-import ListOfRecommendations from './components/ListOfRecommendations';
 import Restaurant from './components/Restaurant';
-import Attribute from './components/Attribute';
 import './App.css';
 import yelpLogo from './assets/Yelp_Logo.png';
 
@@ -25,6 +23,7 @@ function App() {
   const [listOfRecs, setListOfRecs] = useState([]);
   const [newCity, setNewCity] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const makeProper = (str) => {
     const string = str
@@ -41,20 +40,29 @@ function App() {
 
   // FIND QUERIED RESTAURANT [TARGET RESTAURANT]
   const searchNewRestaurant = async (newRestaurant) => {
+    const targetName = makeProper(newRestaurant.name);
+    const targetCity = makeProper(newRestaurant.city);
+
     await axios
       .get('http://127.0.0.1:3001/find_businesses', {
         params: {
-          name: makeProper(newRestaurant.name),
-          city: makeProper(newRestaurant.city)
+          name: targetName,
+          city: targetCity
         }
       })
       .then((response) => {
         if (response.data.length === 1) {
           setRestaurant(response.data[0]);
           setListOfRestaurants([]);
-        } else {
+          setErrorMessage('');
+        } else if (response.data.length > 1) {
           setListOfRestaurants(response.data);
           setRestaurant({});
+          setErrorMessage('');
+        } else {
+          setErrorMessage(
+            `Search for ${targetName} in ${targetCity} yielded 0 results`
+          );
         }
 
         if (listOfUsers.length > 0) {
@@ -83,7 +91,12 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findUserIds');
-        setListOfUsers(response.data[0].data);
+        if (response.data.length > 0) {
+          setListOfUsers(response.data[0].data);
+          setErrorMessage('');
+        } else {
+          setErrorMessage(`Could not find recommendations for ${newCity}}`);
+        }
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -104,7 +117,12 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findRecsBusinessIds');
-        setListOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
+        if (response.data.length > 0) {
+          setListOfRecIds(response.data.map((r) => r._id).slice(0, 1000));
+          setErrorMessage('');
+        } else {
+          setErrorMessage(`Could not find recommendations for ${newCity}}`);
+        }
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -124,8 +142,13 @@ function App() {
       })
       .then((response) => {
         console.log('finished running findBusinessesInNewCity');
-        setListOfRecs(response.data);
         setLoading(false);
+        if (response.data.length > 0) {
+          setListOfRecs(response.data);
+          setErrorMessage('');
+        } else {
+          setErrorMessage(`Could not find recommendations in ${newCity}`);
+        }
       })
       .catch((error) => {
         console.log('could not find reviews: ', error);
@@ -191,6 +214,8 @@ function App() {
         searchRestaurantCallback={searchNewRestaurant}
       ></RestaurantForm>
 
+      {errorMessage ? <div id='error-message'>{errorMessage}</div> : null}
+
       {Object.keys(restaurant).length > 0 ? (
         <ul className='chosen-restaurant'>
           <Restaurant
@@ -212,10 +237,6 @@ function App() {
           onChooseRestaurant={setChosenRestaurant}
         ></ListOfRestaurants>
       )}
-
-      {/* <button onClick={findUserIds}>Get Rec Business Ids</button> */}
-      {/* <button onClick={findRecsBusinessIds}>Get Rec Business Ids</button> */}
-      {/* <button onClick={findBusinessesInNewCity}>Get Recs</button> */}
 
       <div className={newCityFormStatus}>
         <NewCityForm setNewCityCallback={setNewCityName}></NewCityForm>

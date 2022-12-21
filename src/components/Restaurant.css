@@ -6,3 +6,100 @@
   border-radius: 10px;
   box-shadow: 0 4px 2px -2px gray;
 }
+
+.restaurant-details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 1px 0 8px;
+  gap: 15px;
+  color: #555555;
+}
+.name-css {
+  font-size: 24px;
+}
+.reviews-css {
+  position: relative;
+  margin-top: 5px;
+  margin-left: 30px;
+}
+.category-css {
+  background-color: lightgray;
+  border-radius: 5px;
+  padding: 2px 4px;
+}
+.city-css {
+  font-weight: 600;
+}
+.attributes-css {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  gap: 5px;
+}
+
+.star-ratings-css {
+  unicode-bidi: bidi-override;
+  color: #c5c5c5;
+  font-size: 25px;
+  height: 28px;
+  width: 128px;
+  position: relative;
+  text-shadow: 0 1px 0 #a2a2a2;
+}
+[title="0.0"]::after {
+  width: 0%;
+}
+[title="0.1"]::after {
+  width: 10.0%;
+}
+[title="0.2"]::after {
+  width: 20%;
+}
+[title="0.3"]::after {
+  width: 30.0%;
+}
+[title="0.4"]::after {
+  width: 40.0%;
+}
+[title="0.5"]::after {
+  width: 50.0%;
+}
+[title="0.6"]::after {
+  width: 60.0%;
+}
+[title="0.7"]::after {
+  width: 70.0%;
+}
+[title="0.8"]::after {
+  width: 80.0%;
+}
+[title="0.9"]::after {
+  width: 90.0%;
+}
+[title="1.0"]::after {
+  width: 100.0%;
+}
+.star-ratings-css::after {
+  content: '★★★★★';
+  text-shadow: 0 1px 0 #ab5414;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  left: 0;
+  top:0;
+  width: attr(rating);
+  overflow: hidden;
+}
+.star-ratings-css::before {
+  content: '★★★★★';
+  opacity: .3;
+}
+.four-and-above-color::after {
+  color: #FF4500;
+}
+.three-and-below-color::after {
+  color: gold;
+}

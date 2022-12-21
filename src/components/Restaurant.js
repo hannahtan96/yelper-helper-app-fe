@@ -5,6 +5,28 @@ const Restaurant = (props) => {
   const onRestaurantClick = () => {
     props.onChoose(props);
   };
+  console.log(typeof props.categories);
+
+  const displayCategory = () => {
+    const categories = props.categories;
+    if (Array.isArray(categories)) {
+      return Object.values(categories)[0]
+        .split(', ')
+        .filter(
+          (category) => category !== 'Food' && category !== 'Restaurants'
+        )[0];
+    } else {
+      return categories
+        .split(', ')
+        .filter(
+          (category) => category !== 'Food' && category !== 'Restaurants'
+        )[0];
+    }
+  };
+  // console.log(JSON.stringify((2 * props.stars) / 10));
+
+  const starColor =
+    props.stars > 3.5 ? 'four-and-above-color' : 'three-and-below-color';
 
   return (
     <div onClick={onRestaurantClick}>
@@ -12,7 +34,7 @@ const Restaurant = (props) => {
         <li className='name-css'>{props.name}</li>
         <li className='restaurant-details'>
           <div
-            className='star-ratings-css'
+            className={`star-ratings-css ${starColor}`}
             title={JSON.stringify((2 * props.stars) / 10)}
           ></div>
           <div className='reviews-css'>
@@ -20,9 +42,7 @@ const Restaurant = (props) => {
           </div>
         </li>
         <li className='restaurant-details'>
-          <div className='category-css'>
-            {JSON.stringify(props.categories).split(', ')[1]}
-          </div>
+          <div className='category-css'>{displayCategory()}</div>
           <div>
             {'$'.repeat(parseInt(props.attributes.RestaurantsPriceRange2))}
           </div>

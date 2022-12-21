@@ -27,6 +27,12 @@
   letter-spacing: -1px;
 }
 
+#error-message {
+  display: block;
+  text-align: left;
+  padding: 20px 0 5px;
+}
+
 .restaurant-section {
   display: block;
   text-align: left;
@@ -44,116 +50,6 @@
   font-size: 18px;
   background-color: rgba(255,255,255,0.5)
 }
-
-.restaurant-details {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 400;
-  padding: 1px 0 8px;
-  gap: 15px;
-  color: #555555;
-}
-.name-css {
-  font-size: 24px;
-}
-.reviews-css {
-  position: relative;
-  margin-top: 5px;
-  margin-left: 30px;
-}
-.category-css {
-  background-color: lightgray;
-  border-radius: 5px;
-  padding: 2px 4px;
-}
-.city-css {
-  font-weight: 600;
-}
-.attributes-css {
-  display: flex;
-  flex-direction: row;
-  color: black;
-  gap: 5px;
-}
-
-.star-ratings-css {
-  unicode-bidi: bidi-override;
-  color: #c5c5c5;
-  font-size: 25px;
-  height: 28px;
-  width: 100px;
-  position: relative;
-  text-shadow: 0 1px 0 #a2a2a2;
-}
-[title="0.0"]::after {
-  width: 0%;
-}
-[title="0.1"]::after {
-  width: 10.0%;
-}
-[title="0.2"]::after {
-  width: 20%;
-}
-[title="0.3"]::after {
-  width: 30.0%;
-}
-[title="0.4"]::after {
-  width: 40.0%;
-}
-[title="0.5"]::after {
-  width: 50.0%;
-}
-[title="0.6"]::after {
-  width: 60.0%;
-}
-[title="0.7"]::after {
-  width: 70.0%;
-}
-[title="0.8"]::after {
-  width: 80.0%;
-}
-[title="0.9"]::after {
-  width: 90.0%;
-}
-[title="1.0"]::after {
-  width: 100.0%;
-}
-.star-ratings-css::after {
-  color: #FF4500;
-  content: '★★★★';
-  text-shadow: 0 1px 0 #ab5414;
-  position: absolute;
-  z-index: 1;
-  display: block;
-  left: 0;
-  top:0;
-  width: attr(rating);
-  overflow: hidden;
-}
-.star-ratings-css::before {
-  content: '★★★★★';
-  opacity: .3;
-}
-.rating-static {
-  width: 60px;
-  height: 16px;
-  display: block;
-  background: url('http://www.itsalif.info/blogfiles/rating/star-rating.png') 0 0 no-repeat;
-}
-.rating-50 { background-position: 0 0; }
-.rating-40 { background-position: -12px 0; }
-.rating-30 { background-position: -24px 0; }
-.rating-20 { background-position: -36px 0; }
-.rating-10 { background-position: -48px 0; }
-.rating-0 { background-position: -60px 0; }
-.rating-5  { background-position: -48px -16px; }
-.rating-15 { background-position: -36px -16px; }
-.rating-25 { background-position: -24px -16px; }
-.rating-35 { background-position: -12px -16px; }
-.rating-45 { background-position: 0 -16px; }
-
 
 #recommendation-title {
   padding-bottom: 10px;
